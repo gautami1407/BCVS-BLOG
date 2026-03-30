@@ -1,0 +1,2097 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nuchu Goutami — Tech Blog</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+/* ─── CSS VARIABLES ─── */
+:root {
+  --white: #ffffff;
+  --off-white: #fafaf9;
+  --surface: #f4f3f0;
+  --ink: #0f0f0e;
+  --ink-70: rgba(15,15,14,0.7);
+  --ink-40: rgba(15,15,14,0.4);
+  --ink-15: rgba(15,15,14,0.15);
+  --ink-06: rgba(15,15,14,0.06);
+  --accent: #0a5c3e;
+  --accent-light: #e8f5f0;
+  --accent-mid: #14a86e;
+  --gold: #c9972a;
+  --gold-light: #fdf5e4;
+  --rose: #d4503a;
+  --border: #e8e7e4;
+  --border-strong: #d0cfc9;
+  --font-display: 'Playfair Display', Georgia, serif;
+  --font-body: 'DM Sans', -apple-system, sans-serif;
+  --font-mono: 'DM Mono', monospace;
+  --shadow-sm: 0 1px 4px rgba(0,0,0,0.06), 0 4px 12px rgba(0,0,0,0.04);
+  --shadow-md: 0 4px 20px rgba(0,0,0,0.08), 0 12px 40px rgba(0,0,0,0.06);
+  --shadow-lg: 0 8px 40px rgba(0,0,0,0.12), 0 24px 60px rgba(0,0,0,0.08);
+}
+
+/* ─── RESET ─── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; font-size: 16px; }
+body { font-family: var(--font-body); background: var(--white); color: var(--ink); -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+a { text-decoration: none; color: inherit; }
+button { font-family: inherit; }
+
+/* ─── PAGE VISIBILITY ─── */
+.page { display: none; }
+.page.active { display: block; }
+
+/* ═══════════════════════════════════════════════
+   INTRO PAGE
+═══════════════════════════════════════════════ */
+#intro-page { min-height: 100vh; }
+
+/* ── Nav ── */
+.nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 200;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 48px;
+  height: 64px;
+  background: rgba(255,255,255,0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+}
+
+.nav-brand {
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+}
+
+.nav-brand span { color: var(--accent); }
+
+.nav-links { display: flex; align-items: center; gap: 32px; }
+.nav-links a {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink-70);
+  letter-spacing: 0.01em;
+  transition: color 0.2s;
+  position: relative;
+}
+.nav-links a::after {
+  content: '';
+  position: absolute;
+  bottom: -2px; left: 0;
+  width: 0; height: 1px;
+  background: var(--accent);
+  transition: width 0.25s ease;
+}
+.nav-links a:hover { color: var(--ink); }
+.nav-links a:hover::after { width: 100%; }
+
+.nav-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--accent);
+  color: #fff !important;
+  padding: 8px 20px;
+  border-radius: 100px;
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  transition: all 0.2s ease !important;
+  border: none;
+  cursor: pointer;
+}
+.nav-cta::after { display: none !important; }
+.nav-cta:hover { background: #073d29 !important; transform: translateY(-1px); box-shadow: 0 4px 16px rgba(10,92,62,0.3); }
+
+/* ── Hero ── */
+.hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  padding-top: 64px;
+}
+
+/* Background */
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 80% 60% at 70% 40%, rgba(10,92,62,0.06) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 80% at 10% 80%, rgba(201,151,42,0.04) 0%, transparent 50%),
+    linear-gradient(160deg, #ffffff 0%, #f7f6f3 50%, #f0efe9 100%);
+}
+
+/* Decorative grid lines */
+.hero-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(0,0,0,0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,0,0,0.025) 1px, transparent 1px);
+  background-size: 80px 80px;
+  mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 20%, transparent 80%);
+}
+
+/* Floating decorative shapes */
+.hero-shape-1 {
+  position: absolute;
+  top: 100px; right: -80px;
+  width: 500px; height: 500px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(10,92,62,0.07) 0%, transparent 70%);
+  animation: floatA 8s ease-in-out infinite;
+}
+.hero-shape-2 {
+  position: absolute;
+  bottom: -60px; left: -60px;
+  width: 400px; height: 400px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(201,151,42,0.06) 0%, transparent 70%);
+  animation: floatB 10s ease-in-out infinite;
+}
+@keyframes floatA { 0%, 100% { transform: translateY(0) scale(1); } 50% { transform: translateY(-20px) scale(1.03); } }
+@keyframes floatB { 0%, 100% { transform: translateY(0) scale(1); } 50% { transform: translateY(16px) scale(0.97); } }
+
+/* Decorative text watermark */
+.hero-watermark {
+  position: absolute;
+  right: -20px; bottom: 60px;
+  font-family: var(--font-display);
+  font-size: 220px;
+  font-weight: 900;
+  color: rgba(0,0,0,0.025);
+  line-height: 1;
+  pointer-events: none;
+  user-select: none;
+  letter-spacing: -0.06em;
+}
+
+.hero-inner {
+  position: relative;
+  z-index: 10;
+  padding: 80px 48px;
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 420px;
+  gap: 80px;
+  align-items: center;
+  width: 100%;
+}
+
+/* Hero left */
+.hero-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--accent-light);
+  border: 1px solid rgba(10,92,62,0.15);
+  padding: 6px 16px 6px 10px;
+  border-radius: 100px;
+  margin-bottom: 28px;
+  opacity: 0;
+  animation: fadeUp 0.8s ease 0.2s forwards;
+}
+
+.eyebrow-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--accent);
+  animation: pulse 2s ease-in-out infinite;
+}
+@keyframes pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.5; transform: scale(0.8); } }
+
+.eyebrow-text {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--accent);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.hero-title {
+  font-family: var(--font-display);
+  font-size: clamp(48px, 5.5vw, 80px);
+  font-weight: 900;
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  color: var(--ink);
+  margin-bottom: 24px;
+  opacity: 0;
+  animation: fadeUp 0.8s ease 0.4s forwards;
+}
+
+.hero-title .line-accent { color: var(--accent); font-style: italic; }
+.hero-title .line-gold { color: var(--gold); }
+
+.hero-bio {
+  font-size: 17px;
+  line-height: 1.85;
+  color: var(--ink-70);
+  margin-bottom: 40px;
+  max-width: 520px;
+  font-weight: 400;
+  opacity: 0;
+  animation: fadeUp 0.8s ease 0.6s forwards;
+}
+
+.hero-bio strong { color: var(--ink); font-weight: 600; }
+
+.hero-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  opacity: 0;
+  animation: fadeUp 0.8s ease 0.8s forwards;
+}
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--accent);
+  color: #fff;
+  padding: 14px 28px;
+  border-radius: 100px;
+  font-size: 15px;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  box-shadow: 0 4px 20px rgba(10,92,62,0.25);
+}
+.btn-primary:hover { background: #073d29; transform: translateY(-2px); box-shadow: 0 8px 30px rgba(10,92,62,0.35); }
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: transparent;
+  color: var(--ink-70);
+  padding: 14px 24px;
+  border-radius: 100px;
+  font-size: 14px;
+  font-weight: 500;
+  border: 1.5px solid var(--border-strong);
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+.btn-secondary:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-light); }
+
+/* Hero right — author card */
+.hero-card {
+  background: var(--white);
+  border-radius: 24px;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-lg);
+  overflow: hidden;
+  opacity: 0;
+  animation: fadeIn 1s ease 0.5s forwards;
+  position: relative;
+}
+
+.hero-card-header {
+  background: linear-gradient(135deg, #0a5c3e 0%, #14a86e 50%, #0a5c3e 100%);
+  padding: 40px 32px 32px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-card-header::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Ccircle cx='30' cy='30' r='20'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+
+.author-avatar-hero {
+  width: 110px;              /* slightly bigger */
+  height: 110px;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: center 30%;
+  display: block;
+  margin: 0 auto 18px;
+
+  border: 3px solid rgba(255,255,255,0.5);
+
+  position: relative;
+  z-index: 2;
+
+  box-shadow: 0 6px 20px rgba(0,0,0,0.15); /* depth */
+}
+
+
+@keyframes avatarIn { from { transform: scale(0.5) rotate(-10deg); opacity: 0; } to { transform: scale(1) rotate(0); opacity: 1; } }
+
+.card-author-name {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 6px;
+  position: relative;
+  z-index: 1;
+}
+.card-author-role {
+  font-size: 13px;
+  color: rgba(255,255,255,0.7);
+  font-weight: 400;
+  position: relative;
+  z-index: 1;
+}
+
+.hero-card-body { padding: 28px 32px; }
+
+.card-stat-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+  margin-bottom: 24px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.card-stat {
+  text-align: center;
+  padding: 16px 8px;
+  border-right: 1px solid var(--border);
+}
+.card-stat:last-child { border-right: none; }
+
+.card-stat-num {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--accent);
+  line-height: 1;
+  margin-bottom: 4px;
+}
+.card-stat-label {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-40);
+}
+
+.social-title {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-40);
+  margin-bottom: 12px;
+}
+
+.social-row {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+}
+
+.social-pill {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ink-70);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none;
+  background: var(--off-white);
+}
+.social-pill:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-1px); }
+.social-pill svg { width: 14px; height: 14px; fill: currentColor; flex-shrink: 0; }
+
+.social-pill.instagram:hover { border-color: #e1306c; color: #e1306c; background: #fdf0f5; }
+.social-pill.tiktok:hover { border-color: #010101; color: #010101; background: #f5f5f5; }
+.social-pill.linkedin:hover { border-color: #0077b5; color: #0077b5; background: #f0f7fd; }
+.social-pill.twitter:hover { border-color: #1da1f2; color: #1da1f2; background: #f0f8ff; }
+
+/* Hero scroll hint */
+.hero-scroll {
+  position: absolute;
+  bottom: 32px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  opacity: 0;
+  animation: fadeIn 1s ease 1.5s forwards;
+}
+.scroll-label { font-size: 10px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--ink-40); }
+.scroll-line {
+  width: 1px; height: 48px;
+  background: linear-gradient(to bottom, var(--ink-40), transparent);
+  animation: scrollAnim 2s ease-in-out infinite;
+}
+@keyframes scrollAnim { 0% { transform: scaleY(0); transform-origin: top; } 50% { transform: scaleY(1); transform-origin: top; } 51% { transform: scaleY(1); transform-origin: bottom; } 100% { transform: scaleY(0); transform-origin: bottom; } }
+
+/* ── About strip ── */
+.about-strip {
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  padding: 64px 48px;
+}
+
+.about-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 80px;
+  align-items: start;
+}
+
+.about-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.about-label::before { content: ''; width: 24px; height: 1px; background: var(--accent); }
+
+.about-heading {
+  font-family: var(--font-display);
+  font-size: 36px;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  margin-bottom: 4px;
+}
+
+.about-right p {
+  font-size: 16px;
+  line-height: 1.9;
+  color: var(--ink-70);
+  margin-bottom: 16px;
+}
+.about-right p:last-child { margin-bottom: 0; }
+.about-right strong { color: var(--ink); font-weight: 600; }
+
+/* ── Featured post section ── */
+.featured-section {
+  padding: 80px 48px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.section-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: 40px;
+}
+
+.section-eyebrow {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 8px;
+}
+
+.section-title {
+  font-family: var(--font-display);
+  font-size: 40px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+}
+
+.featured-post-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: 360px 1fr;
+  cursor: pointer;
+  transition: all 0.35s cubic-bezier(0.16,1,0.3,1);
+  box-shadow: var(--shadow-sm);
+  position: relative;
+}
+
+.featured-post-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 20px;
+  border: 2px solid transparent;
+  transition: border-color 0.3s ease;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.featured-post-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-lg); }
+.featured-post-card:hover::before { border-color: var(--accent); }
+
+.featured-img {
+  background: linear-gradient(135deg, #0a5c3e 0%, #14a86e 40%, #0a8a58 80%, #073d29 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 16px;
+  position: relative;
+  overflow: hidden;
+  min-height: 340px;
+}
+
+.featured-img::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Ccircle cx='50' cy='50' r='40'/%3E%3Ccircle cx='50' cy='50' r='20'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  background-size: 100px 100px;
+}
+
+.featured-img-icon { font-size: 72px; position: relative; z-index: 1; }
+
+.featured-img-badge {
+  position: relative;
+  z-index: 1;
+  background: rgba(255,255,255,0.15);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,0.25);
+  padding: 6px 16px;
+  border-radius: 100px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #fff;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.featured-content {
+  padding: 48px 52px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.featured-cat {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 16px;
+}
+.featured-cat::before { content: ''; width: 20px; height: 1.5px; background: currentColor; }
+
+.featured-title {
+  font-family: var(--font-display);
+  font-size: 34px;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  margin-bottom: 16px;
+}
+
+.featured-excerpt {
+  font-size: 15px;
+  line-height: 1.8;
+  color: var(--ink-70);
+  margin-bottom: 28px;
+}
+
+.featured-meta {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 32px;
+  flex-wrap: wrap;
+}
+
+.meta-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--ink-40);
+  font-family: var(--font-mono);
+}
+
+.meta-dot { width: 3px; height: 3px; border-radius: 50%; background: var(--border-strong); }
+
+/* ── Footer ── */
+.intro-footer {
+  background: var(--ink);
+  padding: 40px 48px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.footer-brand {
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 700;
+  color: #fff;
+}
+.footer-brand span { color: var(--accent-mid); }
+
+.footer-links { display: flex; gap: 24px; }
+.footer-links a { font-size: 13px; color: rgba(255,255,255,0.45); transition: color 0.2s; }
+.footer-links a:hover { color: rgba(255,255,255,0.8); }
+
+.footer-copy {
+  font-size: 12px;
+  color: rgba(255,255,255,0.25);
+  font-family: var(--font-mono);
+}
+
+/* ═══════════════════════════════════════════════
+   BLOG PAGE
+═══════════════════════════════════════════════ */
+#blog-page { background: var(--white); min-height: 100vh; }
+
+/* ── Blog nav ── */
+.blog-nav {
+  position: sticky;
+  top: 0;
+  z-index: 200;
+  background: rgba(255,255,255,0.92);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+  padding: 0 48px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.blog-back {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink-70);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px 16px 8px 0;
+  transition: all 0.2s;
+  font-family: inherit;
+}
+.blog-back:hover { color: var(--accent); }
+.blog-back svg { transition: transform 0.2s; }
+.blog-back:hover svg { transform: translateX(-3px); }
+
+.blog-nav-center {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink-40);
+  font-family: var(--font-mono);
+}
+
+.reading-progress {
+  position: absolute;
+  bottom: 0; left: 0;
+  height: 2px;
+  background: var(--accent);
+  width: 0%;
+  transition: width 0.1s linear;
+}
+
+/* ── Blog layout ── */
+.blog-layout {
+  display: grid;
+  grid-template-columns: 260px 1fr 220px;
+  max-width: 1300px;
+  margin: 0 auto;
+  min-height: calc(100vh - 60px);
+}
+
+/* ── Left sidebar ── */
+.blog-sidebar-left {
+  padding: 48px 28px 48px 32px;
+  position: sticky;
+  top: 60px;
+  height: calc(100vh - 60px);
+  overflow-y: auto;
+  border-right: 1px solid var(--border);
+}
+
+.blog-sidebar-left::-webkit-scrollbar { width: 0; }
+
+.sidebar-author-mini { margin-bottom: 36px; }
+
+.sidebar-avatar-mini {
+  width: 52px; height: 52px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #0a5c3e, #14a86e);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 12px;
+  border: 2px solid var(--accent-light);
+}
+
+.sidebar-name-mini {
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 2px;
+}
+.sidebar-handle-mini { font-size: 12px; color: var(--accent); font-family: var(--font-mono); }
+
+.sidebar-divider { height: 1px; background: var(--border); margin: 24px 0; }
+
+.sidebar-section-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-40);
+  margin-bottom: 16px;
+}
+
+.toc { list-style: none; }
+.toc li { margin-bottom: 2px; }
+.toc-link {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 7px 10px;
+  border-radius: 8px;
+  font-size: 12.5px;
+  color: var(--ink-70);
+  text-decoration: none;
+  transition: all 0.2s;
+  line-height: 1.4;
+}
+.toc-link:hover { background: var(--accent-light); color: var(--accent); }
+.toc-link.active { background: var(--accent-light); color: var(--accent); font-weight: 600; }
+.toc-num { font-family: var(--font-mono); font-size: 10px; color: var(--ink-40); flex-shrink: 0; margin-top: 1px; }
+
+/* ── Blog main ── */
+.blog-main {
+  min-width: 0;
+  border-right: 1px solid var(--border);
+}
+
+/* Post header */
+.post-header {
+  padding: 64px 64px 52px;
+  border-bottom: 1px solid var(--border);
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(180deg, var(--off-white) 0%, var(--white) 100%);
+}
+
+.post-header-accent {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--accent), var(--accent-mid), var(--gold));
+}
+
+.post-category-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.post-cat-pill {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 5px 12px;
+  border-radius: 100px;
+  background: var(--accent-light);
+  color: var(--accent);
+  border: 1px solid rgba(10,92,62,0.15);
+}
+
+.post-cat-pill.gold {
+  background: var(--gold-light);
+  color: var(--gold);
+  border-color: rgba(201,151,42,0.2);
+}
+
+.post-title {
+  font-family: var(--font-display);
+  font-size: clamp(32px, 4vw, 52px);
+  font-weight: 900;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  color: var(--ink);
+  margin-bottom: 20px;
+  max-width: 760px;
+}
+
+.post-subtitle {
+  font-family: var(--font-display);
+  font-size: 19px;
+  font-style: italic;
+  line-height: 1.65;
+  color: var(--ink-70);
+  margin-bottom: 36px;
+  max-width: 640px;
+}
+
+.post-meta-row {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.post-author {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.post-author-avatar {
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #0a5c3e, #14a86e);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 700;
+  color: #fff;
+  flex-shrink: 0;
+}
+
+.post-author-name { font-size: 14px; font-weight: 600; color: var(--ink); }
+.post-author-date { font-size: 12px; color: var(--ink-40); font-family: var(--font-mono); }
+
+.post-meta-sep { width: 4px; height: 4px; border-radius: 50%; background: var(--border-strong); }
+
+.post-meta-chip {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 5px 12px;
+  border-radius: 100px;
+  background: var(--surface);
+  color: var(--ink-70);
+  font-family: var(--font-mono);
+  border: 1px solid var(--border);
+}
+
+/* Post content */
+.post-content { padding: 60px 64px 80px; }
+
+/* Section blocks */
+.blog-section {
+  margin-bottom: 72px;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.blog-section.visible { opacity: 1; transform: translateY(0); }
+
+.section-eyebrow-post {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.section-eyebrow-post::after { content: ''; flex: 0 0 40px; height: 1px; background: var(--accent); opacity: 0.4; }
+
+.section-h2 {
+  font-family: var(--font-display);
+  font-size: clamp(24px, 3vw, 38px);
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.025em;
+  color: var(--ink);
+  margin-bottom: 24px;
+}
+.section-h2 em { font-style: italic; color: var(--accent); }
+
+.prose {
+  font-size: 16.5px;
+  line-height: 1.95;
+  color: var(--ink-70);
+  margin-bottom: 20px;
+  max-width: 700px;
+}
+.prose:last-child { margin-bottom: 0; }
+.prose strong { color: var(--ink); font-weight: 600; }
+
+/* Hook block */
+.hook-block {
+  background: var(--ink);
+  border-radius: 16px;
+  padding: 56px 60px;
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 72px;
+}
+
+.hook-block::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 60% 60% at 80% 20%, rgba(20,168,110,0.15) 0%, transparent 60%),
+    radial-gradient(ellipse 40% 40% at 20% 80%, rgba(201,151,42,0.08) 0%, transparent 50%);
+}
+
+.hook-block::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 3px; height: 100%;
+  background: linear-gradient(to bottom, var(--accent-mid), var(--gold));
+}
+
+.hook-line {
+  font-family: var(--font-display);
+  font-size: clamp(15px, 2vw, 20px);
+  font-style: italic;
+  color: rgba(255,255,255,0.45);
+  margin-bottom: 6px;
+  padding-left: 28px;
+  position: relative;
+  z-index: 1;
+  opacity: 0;
+  transform: translateX(-16px);
+}
+
+.hook-line.active {
+  opacity: 1;
+  transform: translateX(0);
+  transition: all 0.6s ease;
+}
+
+.hook-line.bold {
+  font-style: normal;
+  font-weight: 900;
+  font-size: clamp(28px, 4vw, 52px);
+  color: #fff;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  margin-top: 16px;
+  margin-bottom: 20px;
+}
+
+.hook-line.sub {
+  font-style: normal;
+  font-size: clamp(14px, 1.8vw, 17px);
+  font-family: var(--font-body);
+  font-weight: 400;
+  color: rgba(255,255,255,0.45);
+  line-height: 1.7;
+}
+
+/* Blockquote */
+.pull-quote {
+  border-left: 3px solid var(--accent);
+  padding: 24px 32px;
+  margin: 32px 0;
+  background: var(--accent-light);
+  border-radius: 0 12px 12px 0;
+}
+.pull-quote p {
+  font-family: var(--font-display);
+  font-size: 19px;
+  font-style: italic;
+  line-height: 1.65;
+  color: var(--ink);
+  margin: 0;
+}
+
+/* Solution cards */
+.sol-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin: 28px 0;
+}
+
+.sol-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 24px 22px;
+  transition: all 0.25s ease;
+}
+.sol-card:hover { border-color: var(--accent); transform: translateY(-3px); box-shadow: var(--shadow-md); }
+
+.sol-card-icon { font-size: 32px; margin-bottom: 14px; }
+.sol-card-name { font-size: 15px; font-weight: 700; color: var(--ink); margin-bottom: 12px; }
+.sol-card-issues { list-style: none; }
+.sol-card-issues li {
+  font-size: 13px;
+  color: var(--ink-70);
+  padding: 5px 0 5px 18px;
+  position: relative;
+  line-height: 1.5;
+  border-bottom: 1px solid var(--border);
+}
+.sol-card-issues li:last-child { border-bottom: none; }
+.sol-card-issues li::before {
+  content: '—';
+  position: absolute;
+  left: 0;
+  font-size: 10px;
+  color: var(--ink-40);
+}
+
+.dead-line {
+  font-family: var(--font-display);
+  font-size: 17px;
+  font-style: italic;
+  color: var(--rose);
+  text-align: center;
+  margin-top: 24px;
+  padding: 18px 24px;
+  border: 1px dashed rgba(212,80,58,0.3);
+  border-radius: 10px;
+  background: rgba(212,80,58,0.03);
+}
+
+/* Transition block */
+.transition-block {
+  background: var(--surface);
+  border-radius: 14px;
+  padding: 44px 48px;
+  border-left: 4px solid var(--accent);
+}
+
+.transition-block p {
+  font-family: var(--font-display);
+  font-size: clamp(17px, 2vw, 22px);
+  line-height: 1.6;
+  color: var(--ink);
+  margin-bottom: 12px;
+}
+.transition-block p:last-child { margin-bottom: 0; font-weight: 700; }
+.transition-block p em { font-style: italic; color: var(--accent); }
+
+/* Innovation card */
+.innovation-card {
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow 0.3s ease;
+}
+.innovation-card:hover { box-shadow: var(--shadow-md); }
+
+.innovation-header {
+  background: linear-gradient(135deg, #0a5c3e 0%, #0f7a52 60%, #14a86e 100%);
+  padding: 32px 36px;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  position: relative;
+  overflow: hidden;
+}
+
+.innovation-header::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 60% 80% at 90% 50%, rgba(255,255,255,0.06) 0%, transparent 60%);
+}
+
+.innovation-num {
+  font-family: var(--font-display);
+  font-size: 80px;
+  font-weight: 900;
+  color: rgba(255,255,255,0.07);
+  line-height: 1;
+  flex-shrink: 0;
+  letter-spacing: -0.04em;
+}
+
+.innov-header-text { position: relative; z-index: 1; }
+.innov-pill {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--accent-mid);
+  background: rgba(20,168,110,0.12);
+  border: 1px solid rgba(20,168,110,0.25);
+  padding: 4px 12px;
+  border-radius: 100px;
+  margin-bottom: 8px;
+}
+.innov-title {
+  font-family: var(--font-display);
+  font-size: 24px;
+  font-weight: 700;
+  color: #fff;
+}
+
+.innovation-body { padding: 36px; background: var(--white); }
+
+.pro-con-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin: 28px 0;
+}
+
+.pc-box {
+  border-radius: 12px;
+  padding: 20px 22px;
+  border: 1px solid var(--border);
+}
+.pc-box.pros { background: rgba(20,168,110,0.04); border-color: rgba(20,168,110,0.2); }
+.pc-box.cons { background: rgba(201,151,42,0.04); border-color: rgba(201,151,42,0.2); }
+
+.pc-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+}
+.pc-box.pros .pc-label { color: #12956b; }
+.pc-box.cons .pc-label { color: var(--gold); }
+
+.pc-list { list-style: none; }
+.pc-list li {
+  font-size: 13.5px;
+  color: var(--ink-70);
+  padding: 6px 0 6px 20px;
+  position: relative;
+  line-height: 1.5;
+  border-bottom: 1px solid var(--border);
+}
+.pc-list li:last-child { border-bottom: none; }
+.pc-box.pros .pc-list li::before { content: '✓'; position: absolute; left: 0; font-size: 11px; color: #12956b; font-weight: 700; }
+.pc-box.cons .pc-list li::before { content: '△'; position: absolute; left: 0; font-size: 10px; color: var(--gold); }
+
+.key-insight {
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-style: italic;
+  color: var(--accent);
+  text-align: center;
+  padding-top: 20px;
+  border-top: 1px solid var(--border);
+}
+
+/* Connection grid */
+.conn-grid {
+  display: grid;
+  grid-template-columns: 1fr 60px 1fr;
+  gap: 0;
+  align-items: center;
+  margin: 28px 0;
+}
+
+.conn-box {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 28px;
+}
+
+.conn-box-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 10px;
+}
+
+.conn-box p { font-size: 14px; color: var(--ink-70); line-height: 1.65; }
+
+.conn-arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--border-strong);
+  font-size: 22px;
+}
+
+/* Insight section */
+.insight-feature {
+  background: var(--ink);
+  border-radius: 16px;
+  padding: 52px 56px;
+  color: #fff;
+  position: relative;
+  overflow: hidden;
+  text-align: center;
+}
+
+.insight-feature::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 80% 60% at 50% 50%, rgba(10,92,62,0.2) 0%, transparent 70%);
+}
+
+.insight-eyebrow {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--accent-mid);
+  margin-bottom: 24px;
+  position: relative;
+}
+
+.insight-quote {
+  font-family: var(--font-display);
+  font-size: clamp(20px, 2.8vw, 32px);
+  font-weight: 700;
+  font-style: italic;
+  line-height: 1.5;
+  color: rgba(255,255,255,0.95);
+  max-width: 640px;
+  margin: 0 auto 24px;
+  position: relative;
+}
+
+.insight-sub {
+  font-size: 15px;
+  color: rgba(255,255,255,0.4);
+  line-height: 1.8;
+  max-width: 480px;
+  margin: 0 auto 36px;
+  font-style: italic;
+  position: relative;
+}
+
+.insight-sig {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.2);
+  border-top: 1px solid rgba(255,255,255,0.08);
+  padding-top: 24px;
+  display: inline-block;
+  position: relative;
+}
+
+/* Share strip */
+.share-strip {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 28px 64px;
+  border-top: 1px solid var(--border);
+  background: var(--off-white);
+  flex-wrap: wrap;
+}
+
+.share-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ink-40);
+}
+
+.share-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 18px;
+  border-radius: 100px;
+  border: 1.5px solid var(--border);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ink-70);
+  background: var(--white);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none;
+  box-shadow: var(--shadow-sm);
+}
+.share-chip:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-1px); }
+.share-chip svg { width: 13px; height: 13px; fill: currentColor; }
+
+/* ── Right sidebar ── */
+.blog-sidebar-right {
+  padding: 48px 28px;
+  position: sticky;
+  top: 60px;
+  height: calc(100vh - 60px);
+  overflow-y: auto;
+}
+.blog-sidebar-right::-webkit-scrollbar { width: 0; }
+
+.sidebar-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.sidebar-card-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-40);
+  margin-bottom: 14px;
+}
+
+.tag-list { display: flex; flex-wrap: wrap; gap: 6px; }
+.tag-chip {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 5px 12px;
+  border-radius: 100px;
+  background: var(--white);
+  color: var(--ink-70);
+  border: 1px solid var(--border);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.tag-chip:hover { background: var(--accent-light); color: var(--accent); border-color: rgba(10,92,62,0.2); }
+
+.reading-time-display {
+  font-family: var(--font-display);
+  font-size: 40px;
+  font-weight: 700;
+  color: var(--accent);
+  line-height: 1;
+  margin-bottom: 4px;
+}
+.reading-time-label { font-size: 12px; color: var(--ink-40); }
+
+/* ─── ANIMATIONS ─── */
+@keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 1100px) {
+  .blog-layout { grid-template-columns: 240px 1fr; }
+  .blog-sidebar-right { display: none; }
+  .hero-inner { grid-template-columns: 1fr 360px; gap: 48px; }
+}
+
+@media (max-width: 900px) {
+  .hero-inner { grid-template-columns: 1fr; padding: 40px 24px 60px; }
+  .hero-card { max-width: 420px; }
+  .blog-layout { grid-template-columns: 1fr; }
+  .blog-sidebar-left { display: none; }
+  .post-content { padding: 40px 28px 60px; }
+  .post-header { padding: 40px 28px 36px; }
+  .sol-grid { grid-template-columns: 1fr; }
+  .pro-con-grid { grid-template-columns: 1fr; }
+  .conn-grid { grid-template-columns: 1fr; }
+  .conn-arrow { transform: rotate(90deg); }
+  .share-strip { padding: 24px 28px; }
+  .featured-post-card { grid-template-columns: 1fr; }
+  .featured-img { min-height: 200px; }
+  .nav { padding: 0 20px; }
+  .about-inner { grid-template-columns: 1fr; gap: 32px; }
+  .about-strip { padding: 48px 24px; }
+  .featured-section { padding: 48px 24px; }
+  .featured-content { padding: 32px 28px; }
+  .hook-block { padding: 40px 32px; }
+  .innovation-body { padding: 28px; }
+  .insight-feature { padding: 40px 28px; }
+  .blog-nav { padding: 0 20px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════
+     INTRO PAGE
+═══════════════════════════════════════════════ -->
+<div id="intro-page" class="page active">
+
+  <!-- Nav -->
+  <nav class="nav">
+    <div class="nav-brand">Nuchu Goutami<span>.</span></div>
+    <div class="nav-links">
+      <a href="#">Home</a>
+      <a href="#">Writing</a>
+      <a href="#">About</a>
+      <button class="nav-cta" onclick="showBlog()">Read Latest →</button>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-grid"></div>
+    <div class="hero-shape-1"></div>
+    <div class="hero-shape-2"></div>
+    <div class="hero-watermark">NG</div>
+
+    <div class="hero-inner">
+      <!-- Left -->
+      <div class="hero-left">
+        <div class="hero-eyebrow">
+          <span class="eyebrow-dot"></span>
+          <span class="eyebrow-text">Student · Tech Explorer · Writer</span>
+        </div>
+
+        <h1 class="hero-title">
+          Hi, I'm<br>
+          <span class="line-accent">Nuchu Goutami.</span>
+        </h1>
+
+        <p class="hero-bio">
+          A student exploring <strong>emerging technologies</strong> — not just what's trending, 
+          but what's quietly shaping the future behind the scenes. I write about the infrastructure 
+          no one talks about, the trade-offs everyone ignores, and the questions worth asking before 
+          they become urgent.
+        </p>
+
+        <div class="hero-actions">
+          <button class="btn-primary" onclick="showBlog()">
+            Read My Blog
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12,5 19,12 12,19"/></svg>
+          </button>
+          <a href="#about" class="btn-secondary">About Me</a>
+        </div>
+      </div>
+<div class="hero-card">
+
+  <div class="hero-card-header">
+    
+    <img 
+      class="author-avatar-hero" 
+      src="images/profile.jpeg" 
+      alt="Nuchu Goutami profile picture" 
+    />
+
+    <div class="card-author-name">Nuchu Goutami</div>
+    <div class="card-author-role">Student · Tech Writer · Curious Mind</div>
+
+  </div>
+
+  <!-- ✅ NOW inside card -->
+  <div class="hero-card-body">
+
+    <div class="card-stat-row">
+      <div class="card-stat">
+        <div class="card-stat-num">01</div>
+        <div class="card-stat-label">Posts</div>
+      </div>
+      <div class="card-stat">
+        <div class="card-stat-num">AI</div>
+        <div class="card-stat-label">Focus</div>
+      </div>
+      <div class="card-stat">
+        <div class="card-stat-num">∞</div>
+        <div class="card-stat-label">Questions</div>
+      </div>
+    </div>
+
+    <p class="social-title">Find Me Online</p>
+
+    <div class="social-row">
+      <a href="#" class="social-pill">📸 Instagram</a>
+      <a href="#" class="social-pill">✉️ Gmail</a>
+      <a href="#" class="social-pill">💼 LinkedIn</a>
+      <a href="#" class="social-pill">𝕏 Threads</a>
+    </div>
+
+  </div>
+
+</div>
+    <div class="hero-scroll">
+      <span class="scroll-label">Scroll</span>
+      <div class="scroll-line"></div>
+    </div>
+  </section>
+
+  <!-- About strip -->
+  <section class="about-strip" id="about">
+    <div class="about-inner">
+      <div>
+        <p class="about-label">About Me</p>
+        <h2 class="about-heading">More than a student.</h2>
+      </div>
+      <div class="about-right">
+        <p>
+          Hi — I'm <strong>Nuchu Goutami</strong>, a student with a curiosity that doesn't stop at what's trending. 
+          I write about the technologies working silently in the background, the ideas no one is paying 
+          attention to yet, and the questions worth asking before they become urgent.
+        </p>
+        <p>
+          This blog isn't about AI — it's about the questions <em>around</em> AI. The costs, the trade-offs, 
+          the infrastructure nobody's covering. Written by someone who believes <strong>curiosity shouldn't 
+          stop at the obvious.</strong>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured post -->
+  <section class="featured-section">
+    <div class="section-header">
+      <div>
+        <p class="section-eyebrow">Latest Writing</p>
+        <h2 class="section-title">Featured Post</h2>
+      </div>
+    </div>
+
+    <div class="featured-post-card" onclick="showBlog()">
+      <div class="featured-img">
+        <div class="featured-img-icon"></div>
+        <div class="featured-img-badge">Featured · 10 min read</div>
+      </div>
+      <div class="featured-content">
+        <p class="featured-cat">AI · Sustainability · Emerging Technology</p>
+        <h3 class="featured-title">AI Is Powerful… But Its Biggest Problem Is Being Ignored</h3>
+        <p class="featured-excerpt">
+          While the world focuses on intelligence, the real challenge lies in sustaining it. 
+          Data centers, heat, and the hidden cost of every AI response — and the two innovations 
+          that might quietly change everything.
+        </p>
+        <div class="featured-meta">
+          <span class="meta-chip">Nuchu Goutami</span>
+          <span class="meta-dot"></span>
+          <span class="meta-chip">March 30, 2026</span>
+          <span class="meta-dot"></span>
+          <span class="meta-chip">10 min read</span>
+        </div>
+        <button class="btn-primary" onclick="showBlog(); event.stopPropagation();">
+          Read Post
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12,5 19,12 12,19"/></svg>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="intro-footer">
+    <div class="footer-brand">Nuchu Goutami<span>.</span></div>
+    <div class="footer-links">
+      <a href="https://www.instagram.com/gautami_007?igsh=dWJmMmFuODgyaTJx" target="_blank">Instagram</a>
+      <a href="https://www.linkedin.com/in/goutami-nuchu-b780a9285?utm_source=share_via&utm_content=profile&utm_medium=member_android" target="_blank">LinkedIn</a>
+      <a href="mailto:gouthaminurchu@gmail.com" target="_blank">Gmail</a>
+      <a href="https://www.threads.com/@gautami_007" target="_blank">Threads</a>
+    </div>
+    <span class="footer-copy">© 2026 Nuchu Goutami · Made with curiosity</span>
+  </footer>
+
+</div><!-- end intro page -->
+
+
+<!-- ═══════════════════════════════════════════════
+     BLOG PAGE
+═══════════════════════════════════════════════ -->
+<div id="blog-page" class="page">
+
+  <!-- Blog nav -->
+  <div class="blog-nav">
+    <button class="blog-back" onclick="showIntro()">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12,19 5,12 12,5"/></svg>
+      Back
+    </button>
+    <span class="blog-nav-center">Nuchu Goutami · Tech Blog</span>
+    <span style="font-size:12px;color:var(--ink-40);font-family:var(--font-mono);">March 30, 2026</span>
+    <div class="reading-progress" id="readingProgress"></div>
+  </div>
+
+  <div class="blog-layout">
+
+    <!-- Left sidebar -->
+    <aside class="blog-sidebar-left">
+      <div class="sidebar-author-mini">
+        <img class="sidebar-avatar-mini" src="https://avatars.githubusercontent.com/u/122017982?v=4" alt="Nuchu Goutami profile picture" style="object-fit:cover;" />
+        <div class="sidebar-name-mini">Nuchu Goutami</div>
+        <div class="sidebar-handle-mini">@gautami_007</div>
+      </div>
+
+      <div class="sidebar-divider"></div>
+
+      <p class="sidebar-section-label">In This Post</p>
+      <ul class="toc">
+        <li><a class="toc-link" href="#s-hook"><span class="toc-num">01</span> The Hook</a></li>
+        <li><a class="toc-link" href="#s-problem"><span class="toc-num">02</span> The Hidden Cost</a></li>
+        <li><a class="toc-link" href="#s-solutions"><span class="toc-num">03</span> Current Solutions</a></li>
+        <li><a class="toc-link" href="#s-transition"><span class="toc-num">04</span> A Different Question</a></li>
+        <li><a class="toc-link" href="#s-phononic"><span class="toc-num">05</span> Phononic Crystals</a></li>
+        <li><a class="toc-link" href="#s-orbital"><span class="toc-num">06</span> Orbital Data Centers</a></li>
+        <li><a class="toc-link" href="#s-connection"><span class="toc-num">07</span> Two Ideas, One Goal</a></li>
+        <li><a class="toc-link" href="#s-missing"><span class="toc-num">08</span> What We're Missing</a></li>
+        <li><a class="toc-link" href="#s-closing"><span class="toc-num">09</span> Final Thought</a></li>
+      </ul>
+
+      <div class="sidebar-divider"></div>
+      <p class="sidebar-section-label">Tags</p>
+      <div class="tag-list">
+        <span class="tag-chip">AI</span>
+        <span class="tag-chip">Data Centers</span>
+        <span class="tag-chip">Cooling</span>
+        <span class="tag-chip">Space</span>
+        <span class="tag-chip">Energy</span>
+        <span class="tag-chip">Innovation</span>
+        <span class="tag-chip">Sustainability</span>
+      </div>
+    </aside>
+
+    <!-- Main content -->
+    <main class="blog-main" id="blogMain">
+
+      <!-- Post header -->
+      <div class="post-header">
+        <div class="post-header-accent"></div>
+        <div class="post-category-row">
+          <span class="post-cat-pill">AI</span>
+          <span class="post-cat-pill">Sustainability</span>
+          <span class="post-cat-pill gold">Emerging Technology</span>
+        </div>
+        <h1 class="post-title">AI Is Powerful… But Its Biggest Problem Is Being Ignored</h1>
+        <p class="post-subtitle">While the world focuses on intelligence, the real challenge lies in sustaining it.</p>
+        <div class="post-meta-row">
+          <div class="post-author">
+            <img class="post-author-avatar" src="https://avatars.githubusercontent.com/u/122017982?v=4" alt="Nuchu Goutami profile picture" style="object-fit:cover;" />
+            <div>
+              <div class="post-author-name">Nuchu Goutami</div>
+              <div class="post-author-date">March 30, 2026 · 10 min read</div>
+            </div>
+          </div>
+          <span class="post-meta-sep"></span>
+          <span class="post-meta-chip">Student Essay</span>
+          <span class="post-meta-chip">Original Research</span>
+        </div>
+      </div>
+
+      <!-- Content -->
+      <div class="post-content">
+
+        <!-- HOOK -->
+        <div id="s-hook" class="blog-section">
+          <div class="hook-block" id="hookBlock">
+            <p class="hook-line">Every click…</p>
+            <p class="hook-line">Every search…</p>
+            <p class="hook-line">Every AI response…</p>
+            <p class="hook-line bold">Generates heat.</p>
+            <p class="hook-line sub">Not on your screen… but inside massive data centers<br>you've probably never thought about.</p>
+          </div>
+        </div>
+
+        <!-- PROBLEM -->
+        <div id="s-problem" class="blog-section">
+          <p class="section-eyebrow-post">Chapter 01</p>
+          <h2 class="section-h2">The Hidden Cost of <em>Intelligence</em></h2>
+
+          <p class="prose">
+            Artificial Intelligence doesn't just run on algorithms. It runs on infrastructure.
+          </p>
+          <p class="prose">
+            Behind every smart system are massive data centers working continuously — processing requests, storing data, and delivering results in milliseconds. Every image generated. Every sentence predicted. Every recommendation served.
+          </p>
+          <p class="prose">
+            But all of this comes with a cost: <strong>heat.</strong>
+          </p>
+
+          <div class="pull-quote">
+            <p>A significant portion of energy in data centers is not used to run AI… it is used just to cool the systems down.</p>
+          </div>
+
+          <p class="prose">
+            This creates a growing challenge — increasing energy consumption, rising environmental impact, and higher operational complexity.
+          </p>
+          <p class="prose">
+            We are not just building smarter systems — we are building systems that are becoming <strong>harder to sustain.</strong>
+          </p>
+        </div>
+
+        <!-- SOLUTIONS -->
+        <div id="s-solutions" class="blog-section">
+          <p class="section-eyebrow-post">Chapter 02</p>
+          <h2 class="section-h2">How We Handle It Today <em>(And Why It's Not Enough)</em></h2>
+          <p class="prose">
+            To manage this heat, data centers rely on traditional cooling methods. The industry has been fighting this problem for decades. Three dominant solutions exist — and all three share the same fundamental ceiling.
+          </p>
+
+          <div class="sol-grid">
+            <div class="sol-card">
+              <div class="sol-card-icon">🌀</div>
+              <div class="sol-card-name">Cooling Fans</div>
+              <ul class="sol-card-issues">
+                <li>Constantly running, consuming energy and creating noise</li>
+                <li>Scales poorly with density</li>
+                <li>Prone to mechanical wear over time</li>
+              </ul>
+            </div>
+            <div class="sol-card">
+              <div class="sol-card-icon">❄️</div>
+              <div class="sol-card-name">Air Conditioning</div>
+              <ul class="sol-card-issues">
+                <li>Expensive and inefficient at large scale</li>
+                <li>Adds significant carbon load</li>
+                <li>Breaks down in hot climates</li>
+              </ul>
+            </div>
+            <div class="sol-card">
+              <div class="sol-card-icon">💧</div>
+              <div class="sol-card-name">Liquid Cooling</div>
+              <ul class="sol-card-issues">
+                <li>More effective, but complex to maintain</li>
+                <li>High maintenance overhead</li>
+                <li>Failure risk always present</li>
+              </ul>
+            </div>
+          </div>
+
+          <p class="dead-line">These solutions don't fix the problem… they only delay it.</p>
+          <br>
+          <p class="prose">
+            As AI continues to scale, these methods become less sustainable. We are essentially spending more energy just to maintain the systems we build.
+          </p>
+        </div>
+
+        <!-- TRANSITION -->
+        <div id="s-transition" class="blog-section">
+          <p class="section-eyebrow-post">Chapter 03</p>
+          <h2 class="section-h2">A Different <em>Question</em></h2>
+          <div class="transition-block">
+            <p>While everyone is focused on making AI <em>more powerful</em>…</p>
+            <p>I started wondering something different.</p>
+            <p>What about the cost of <em>keeping it running</em>?</p>
+            <p>And more importantly — are we solving <em>the right problem</em>?</p>
+          </div>
+        </div>
+
+        <!-- PHONONIC CRYSTALS -->
+        <div id="s-phononic" class="blog-section">
+          <p class="section-eyebrow-post">Chapter 04</p>
+          <h2 class="section-h2">Innovation I</h2>
+
+          <div class="innovation-card">
+            <div class="innovation-header">
+              <div class="innovation-num">01</div>
+              <div class="innov-header-text">
+                <div class="innov-pill">Phononic Crystals</div>
+                <div class="innov-title">Silent Cooling: A Different Approach</div>
+              </div>
+            </div>
+            <div class="innovation-body">
+              <p class="prose">What if, instead of using external cooling systems, we could design systems that manage heat internally?</p>
+              <p class="prose">
+                This is the idea behind <strong>phononic crystals</strong> — advanced materials engineered to control heat using microscopic vibrations, similar to how sound waves move through matter. Instead of pushing heat away with fans or liquids, these materials <strong>guide heat through their structure, control how it flows, and reduce the need for external cooling.</strong>
+              </p>
+              <p class="prose">No moving parts. No noise. No energy wasted on the act of cooling itself.</p>
+
+              <div class="pro-con-grid">
+                <div class="pc-box pros">
+                  <div class="pc-label">Advantages</div>
+                  <ul class="pc-list">
+                    <li>Dramatically more energy efficient</li>
+                    <li>Completely silent operation</li>
+                    <li>No mechanical parts to fail</li>
+                    <li>Passive — works without power input</li>
+                  </ul>
+                </div>
+                <div class="pc-box cons">
+                  <div class="pc-label">Limitations</div>
+                  <ul class="pc-list">
+                    <li>Still in experimental stages</li>
+                    <li>Difficult to scale for real-world use</li>
+                    <li>Manufacturing complexity is high</li>
+                  </ul>
+                </div>
+              </div>
+
+              <p class="key-insight">This is not just an improvement — it's a shift from cooling systems to self-cooling materials.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- ORBITAL -->
+        <div id="s-orbital" class="blog-section">
+          <p class="section-eyebrow-post">Chapter 05</p>
+          <h2 class="section-h2">Innovation II</h2>
+
+          <div class="innovation-card">
+            <div class="innovation-header">
+              <div class="innovation-num">02</div>
+              <div class="innov-header-text">
+                <div class="innov-pill">Orbital Data Centers</div>
+                <div class="innov-title">What If Computing Didn't Stay on Earth?</div>
+              </div>
+            </div>
+            <div class="innovation-body">
+              <p class="prose">Now consider an even more radical idea. Instead of solving the heat problem on Earth — <strong>what if we moved computing beyond it?</strong></p>
+              <p class="prose">
+                This is the concept of <strong>orbital data centers</strong> — placing servers in space, where the constraints that cripple Earth-based infrastructure simply don't apply. Energy comes from unlimited solar power. Cooling happens naturally in the vacuum of space.
+              </p>
+              <p class="prose">
+                In this environment, cooling is no longer a challenge — it becomes a natural condition. This changes the perspective entirely: instead of asking <em>"How do we cool systems?"</em> we begin asking <em>"Where should systems exist?"</em>
+              </p>
+
+              <div class="pro-con-grid">
+                <div class="pc-box pros">
+                  <div class="pc-label">Advantages</div>
+                  <ul class="pc-list">
+                    <li>Near-unlimited clean solar energy</li>
+                    <li>Natural thermal radiation in vacuum</li>
+                    <li>Zero environmental footprint on Earth</li>
+                    <li>No land usage or urban heat impact</li>
+                  </ul>
+                </div>
+                <div class="pc-box cons">
+                  <div class="pc-label">Challenges</div>
+                  <ul class="pc-list">
+                    <li>Extraordinarily expensive to launch</li>
+                    <li>Maintenance is near-impossible remotely</li>
+                    <li>Communication delays (latency)</li>
+                  </ul>
+                </div>
+              </div>
+
+              <p class="key-insight">Instead of fixing the system… we change where it exists.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- CONNECTION -->
+        <div id="s-connection" class="blog-section">
+          <p class="section-eyebrow-post">Chapter 06</p>
+          <h2 class="section-h2">Two Different Ideas. <em>One Common Goal.</em></h2>
+          <p class="prose">At first glance, these innovations seem completely unrelated. One is microscopic. The other is orbital. One rethinks materials. The other rethinks location.</p>
+          <p class="prose">But they are both addressing the same fundamental issue: <strong>the sustainability of modern computing.</strong></p>
+
+          <div class="conn-grid">
+            <div class="conn-box">
+              <div class="conn-box-label">Phononic Crystals</div>
+              <p>Solve the problem at the <strong>material level</strong> — changing how systems handle heat, without mechanical intervention.</p>
+            </div>
+            <div class="conn-arrow">→</div>
+            <div class="conn-box">
+              <div class="conn-box-label">Orbital Data Centers</div>
+              <p>Solve it at the <strong>environmental level</strong> — removing the problem by changing where the system exists entirely.</p>
+            </div>
+          </div>
+
+          <p class="prose">Both approaches move beyond managing heat — they aim to <strong>eliminate the problem entirely.</strong></p>
+
+          <div class="pull-quote">
+            <p>This is not about smarter AI… it's about sustainable AI.</p>
+          </div>
+        </div>
+
+        <!-- MISSING -->
+        <div id="s-missing" class="blog-section">
+          <p class="section-eyebrow-post">Chapter 07</p>
+          <h2 class="section-h2">What We're <em>Missing</em></h2>
+          <p class="prose" style="font-size:18px;color:var(--ink);font-weight:500;">We are currently focused on: <em>what AI can do, how powerful it is, how fast it is evolving.</em></p>
+          <p class="prose">But very few people are asking — what does it take to keep AI running at scale? That's where the real challenge lies. And more importantly — that's where the next wave of innovation is happening.</p>
+          <p class="prose">
+            We often think innovation is loud — new tools, new platforms, new breakthroughs. But the most important innovations are sometimes the quiet ones — the ones solving problems we haven't fully recognized yet.
+          </p>
+        </div>
+
+        <!-- CLOSING -->
+        <div id="s-closing" class="blog-section">
+          <p class="section-eyebrow-post">Closing</p>
+          <div class="insight-feature">
+            <p class="insight-eyebrow">Final Thought</p>
+            <p class="insight-quote">
+              "Because the future won't be defined by how powerful our technology becomes… but by whether it can sustain the power we've already created."
+            </p>
+            <p class="insight-sub">
+              Phononic materials and space-based data centers may still be in their early stages — but they represent a shift in thinking: from making technology more powerful, to making it sustainable and scalable. And as a student, I believe our curiosity shouldn't stop at what already exists — it should push us to explore the ideas that are just beginning.
+            </p>
+            <span class="insight-sig">Written by Nuchu Goutami · 2025</span>
+          </div>
+        </div>
+
+      </div><!-- end post-content -->
+
+      <!-- Share strip -->
+      <div class="share-strip">
+        <span class="share-label">Share</span>
+        <a href="https://www.threads.com/@gautami_007" class="share-chip" target="_blank">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" stroke="black" stroke-width="2" fill="none"/><path d="M8 12c0-2.21 1.79-4 4-4s4 1.79 4 4-1.79 4-4 4" stroke="black" stroke-width="2" fill="none"/></svg>
+          Threads
+        </a>
+        <a href="https://www.linkedin.com/in/goutami-nuchu-b780a9285?utm_source=share_via&utm_content=profile&utm_medium=member_android" class="share-chip" target="_blank">
+          <svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+          LinkedIn
+        </a>
+        <a href="mailto:gouthaminurchu@gmail.com" class="share-chip" target="_blank">
+          <svg viewBox="0 0 24 24"><path d="M12 13.065l-8.485-6.364A2 2 0 0 1 5.343 4h13.314a2 2 0 0 1 1.828 2.701l8.485 6.364 8.485-6.364a2 2 0 0 1-1.828 2.701z"/></svg>
+          Gmail
+        </a>
+      </div>
+
+    </main>
+
+    <!-- Right sidebar -->
+    <aside class="blog-sidebar-right">
+      <div class="sidebar-card">
+        <p class="sidebar-card-label">Reading Time</p>
+        <div class="reading-time-display">10</div>
+        <div class="reading-time-label">minutes</div>
+      </div>
+
+      <div class="sidebar-card">
+        <p class="sidebar-card-label">About</p>
+        <p style="font-size:13px;line-height:1.7;color:var(--ink-70);">Written by <strong style="color:var(--ink);">Nuchu Goutami</strong> — a student exploring the hidden side of AI and technology.</p>
+      </div>
+
+      <div class="sidebar-card">
+        <p class="sidebar-card-label">Topics</p>
+        <div class="tag-list">
+          <span class="tag-chip">AI</span>
+          <span class="tag-chip">Energy</span>
+          <span class="tag-chip">Cooling</span>
+          <span class="tag-chip">Space</span>
+          <span class="tag-chip">Future</span>
+        </div>
+      </div>
+    </aside>
+
+  </div><!-- end blog-layout -->
+</div><!-- end blog-page -->
+
+
+<script>
+/* ─── PAGE NAVIGATION ─── */
+function showBlog() {
+  document.getElementById('intro-page').classList.remove('active');
+  document.getElementById('blog-page').classList.add('active');
+  window.scrollTo(0, 0);
+  setTimeout(() => {
+    initScrollReveal();
+    initHookAnimation();
+  }, 100);
+}
+
+function showIntro() {
+  document.getElementById('blog-page').classList.remove('active');
+  document.getElementById('intro-page').classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+/* ─── SCROLL REVEAL ─── */
+function initScrollReveal() {
+  const sections = document.querySelectorAll('#blog-page .blog-section');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+
+  sections.forEach(s => observer.observe(s));
+}
+
+/* ─── HOOK ANIMATION ─── */
+function initHookAnimation() {
+  const lines = document.querySelectorAll('#hookBlock .hook-line');
+  lines.forEach((line, i) => {
+    setTimeout(() => {
+      line.classList.add('active');
+    }, 200 + i * 180);
+  });
+}
+
+/* ─── READING PROGRESS ─── */
+const blogMain = document.getElementById('blogMain');
+const progressBar = document.getElementById('readingProgress');
+
+document.addEventListener('scroll', () => {
+  if (!document.getElementById('blog-page').classList.contains('active')) return;
+  const scrollTop = window.scrollY;
+  const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+  const progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+  if (progressBar) progressBar.style.width = progress + '%';
+});
+
+/* ─── SMOOTH SCROLL TOC ─── */
+document.querySelectorAll('.toc-link').forEach(link => {
+  link.addEventListener('click', e => {
+    e.preventDefault();
+    const id = link.getAttribute('href').slice(1);
+    const el = document.getElementById(id);
+    if (el) {
+      const offset = 80;
+      const top = el.getBoundingClientRect().top + window.scrollY - offset;
+      window.scrollTo({ top, behavior: 'smooth' });
+    }
+  });
+});
+
+/* ─── ACTIVE TOC HIGHLIGHT ─── */
+function updateActiveToc() {
+  if (!document.getElementById('blog-page').classList.contains('active')) return;
+  const sections = document.querySelectorAll('#blog-page .blog-section[id]');
+  const tocLinks = document.querySelectorAll('.toc-link');
+  let currentId = '';
+
+  sections.forEach(section => {
+    const rect = section.getBoundingClientRect();
+    if (rect.top <= 120) currentId = section.id;
+  });
+
+  tocLinks.forEach(link => {
+    link.classList.remove('active');
+    if (link.getAttribute('href') === '#' + currentId) {
+      link.classList.add('active');
+    }
+  });
+}
+
+window.addEventListener('scroll', updateActiveToc, { passive: true });
+</script>
+
+</body>
+</html>
